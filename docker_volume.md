@@ -45,3 +45,36 @@ CREATE TABLE messages (
 
 #we can see that there is database "kyc_devops" in our new docker container.
 
+#Types of docker volumes:
+
+Docker supports two types of volumes: #unnamed (or anonymous) volumes and #named volumes. Both serve the purpose of persisting data beyond the lifecycle of a container, but they differ in management, usability, and use cases.
+
+#
+Difference Between Unnamed (Anonymous) Volumes and Named Volumes
+Docker supports two types of volumes: unnamed (or anonymous) volumes and named volumes. Both serve the purpose of persisting data beyond the lifecycle of a container, but they differ in management, usability, and use cases.
+
+# 1.Unnamed (Anonymous) Volumes
+An unnamed or anonymous volume is created automatically by Docker when you specify a volume mount without explicitly naming the volume. It is identified by a unique, randomly generated name.
+# Characteristics of Unnamed Volumes
+No Explicit Name: Docker assigns a unique identifier to the volume.
+
+Use Case: Primarily for quick, temporary setups where you don't need to reference the volume again.
+
+Harder to Manage: Since they lack a human-readable name, tracking and managing unnamed volumes is more challenging.
+
+Default Behavior: If you specify a volume without providing a name, Docker creates an anonymous volume.
+
+Lifecycle: The volume remains even after the container is removed unless explicitly cleaned up
+
+# 2. Named Volumes
+A named volume is explicitly created and referred to by a specific name, making it easier to identify and manage.
+
+Characteristics of Named Volumes:
+
+Human-Readable Name: You assign a specific name to the volume, making it easier to reference and manage.
+
+Use Case: Suitable for production environments and reusable setups where the same volume is used across multiple containers.
+
+Easier Management: Named volumes are straightforward to locate, inspect, and remove.
+
+Lifecycle: Independent of container lifecycle. Even if a container using the volume is deleted, the volume remains
