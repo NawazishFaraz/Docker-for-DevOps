@@ -47,23 +47,39 @@ When you run a container, Docker attaches it to a network. By default, Docker cr
 
 ### **Example 1: Bridge Network for Isolated Containers**
 
-Imagine you have two services:
-1. A frontend (React)
-2. A backend (Flask)
+Imagine you have two containers:
+1. A backend (mqsql)
+   ```bash
+   docker run -d --name mysql -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD=admin -v mysql_volume:/var/lib/mysql -p 3306:3306 mysql:latest
 
-You can use a bridge network to allow them to communicate.
+-e : environment variable
+
+-v : volume mapping
+
+Run docker ps : mysql container will be running
+   
+2. A fronted (Flask)
+   ```bash
+   docker run -d --name flaskapp -e MYSQL_HOST=mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 flaskapp:late
+  
+we have configured the env variable of sql container in flask container
 
 #### Steps:
 1. Create a bridge network:
    ```bash
-   docker network create my_bridge
+   docker network create -d bridge twotier
    ```
+-d = driver = bridge 
 
 2. Run the containers on the bridge network:
    ```bash
-   docker run -d --name backend --network my_bridge flask-app
-   docker run -d --name frontend --network my_bridge react-app
+   docker run -d --name mysql -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD=admin -v mysql_volume:/var/lib/mysql -p 3306:3306 --network twotier mysql:latest 
    ```
+   
+   ```bash
+   docker run -d --name flaskapp -e MYSQL_HOST=mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 --network twotier flaskapp:late
+   ```
+   
 
 3. The frontend container can access the backend using the container name `backend` (e.g., `http://backend:5000`).
 
@@ -78,54 +94,7 @@ Use the host network to reduce latency for a containerized Nginx server.
    ```bash
    docker run -d --network host nginx
    ```
-
-2. Access the Nginx server directly via the host's IP and port.
-
----
-
-### **Example 3: Overlay Network for Multi-Host Applications**
-
-Scenario: A distributed app with components running on multiple Docker hosts.
-
-#### Steps:
-1. Enable Docker Swarm:
-   ```bash
-   docker swarm init
-   ```
-
-2. Create an overlay network:
-   ```bash
-   docker network create -d overlay my_overlay
-   ```
-
-3. Deploy services to the network:
-   ```bash
-   docker service create --name app --network my_overlay flask-app
-   ```
-
----
-
-### **Example 4: Macvlan Network for Legacy Systems**
-
-Scenario: A legacy application requires direct access to the physical network.
-
-#### Steps:
-1. Create a Macvlan network:
-   ```bash
-   docker network create -d macvlan \
-     --subnet=192.168.1.0/24 \
-     --gateway=192.168.1.1 \
-     -o parent=eth0 my_macvlan
-   ```
-
-2. Run the container on the Macvlan network:
-   ```bash
-   docker run -d --network my_macvlan legacy-app
-   ```
-
-3. The container can communicate with other devices on the network as if it were a physical machine.
-
----
+Access the Nginx server directly via the host's IP and port
 
 ## **Useful Commands**
 
