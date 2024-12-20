@@ -10,32 +10,52 @@ Containers are designed to be ephemeral, meaning their file systems are reset wh
 #So to overcome from this problem , we have docker volumes.
 
 # firstly we need to create a directory in our host system 
-for e.g (1) mkdir mysql_volume
-
+for e.g (1) 
+```
+   mkdir mysql_volume
+```
 #Now from the sql image , we have in our docker engine , we will run this command:
 
-#(2)docker run -d --name mysql-container -v /home/ubuntu/mysql_volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+#(2)
+```
+  docker run -d --name mysql-container -v /home/ubuntu/mysql_volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+```
 
 #-v /home/ubuntu/mysql_volume:/var/lib/mysql =: this command is used to map the directory we created with the existing docker volume for persistent data storage with -v flag
 
-#(3) docker exec -it <container id> bash : to enter in mysql container
+#(3)
+```
+   docker exec -it <container id> bash : to enter in mysql container
+```
 
-#(4) mysql -u root -p : then enter your pass word (root)
+#(4)  
+```
+   mysql -u root -p : then enter your pass word (root)
+```
 
-#now inside the sql container run few commands : (1): create database kyc_devops; (2): use kyc_devops;
+#now inside the sql container run few commands :
+```
+  (1): create database kyc_devops;
+  (2): use kyc_devops;
+```
 
 #(3):
-CREATE TABLE messages (
+ ```sql
+     CREATE TABLE messages (
+         id INT AUTO_INCREMENT PRIMARY KEY,
+         message TEXT
+     );
+ ```
 
- id INT AUTO_INCREMENT PRIMARY KEY,
- 
-     message TEXT
-     
-    );
+#(4):
+```
+   insert into messages (message) values ("kyc submitted"); : run this command 4-5 times to create multiple user in database.
+```
 
-#(4):insert into messages (message) values ("kyc submitted"); : run this command 4-5 times to create multiple user in database.
-
-#(5): select * from messages; : we will be able to see a dates with 4-5 lines of id and message.
+#(5):
+```
+   select * from messages; : we will be able to see a dates with 4-5 lines of id and message.
+```
 
 #now exit from this container and now stop or remove this container , we will still be able to see a directory name kyc_devops in my mysql_volume folder.
 
@@ -49,8 +69,7 @@ CREATE TABLE messages (
 
 Docker supports two types of volumes: #unnamed (or anonymous) volumes and #named volumes. Both serve the purpose of persisting data beyond the lifecycle of a container, but they differ in management, usability, and use cases.
 
-#
-Difference Between Unnamed (Anonymous) Volumes and Named Volumes
+# Difference Between Unnamed (Anonymous) Volumes and Named Volumes:
 Docker supports two types of volumes: unnamed (or anonymous) volumes and named volumes. Both serve the purpose of persisting data beyond the lifecycle of a container, but they differ in management, usability, and use cases.
 
 # 1.Unnamed (Anonymous) Volumes
