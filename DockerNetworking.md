@@ -77,7 +77,7 @@ we have configured the env variable of sql container in flask container
    ```
    
    ```bash
-   docker run -d --name flaskapp -e MYSQL_HOST=mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 --network twotier flaskapp:late
+   docker run -d --name flaskapp -e MYSQL_HOST=mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 --network twotier flaskapp:latest
    ```
    
 
